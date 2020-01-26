@@ -72,14 +72,6 @@ Here is a small description of the request body fields:
 %language code
 ```
 
-See example below.
-
-- sessionId: is the id of the session we are using. this field is used to differentiate between users and also to allow
-users to continue their interaction with the interpreter in the same execution context (example declare variable and reuse them).
-Note that you may have same sessionId for different languages but the codes run in seperate contexts for different sessions. Also the sessionId is not mandatory in the first request and the API will provide you with a sessionId in case not specified but it must be used to remembre the previous declaration...
-
-
-
 ### Interpreter response body
 
 The **/execute** returns a json object as response. The response have the following format:
