@@ -18,7 +18,7 @@
 Clone project into a local folder.
 
 ```$shell 
-$ git clone https://github.com/Eroui/notbook-interpreter.git
+$ git clone https://github.com/LMohamedPro/notebook--server.git
 ```
 
 ## Maven Installation
