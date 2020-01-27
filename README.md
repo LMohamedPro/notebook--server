@@ -3,8 +3,7 @@
 
     
 1. [Installation](#installation)
-    - [Maven Installation](#maven-installation)
-        - [GraalVM](#graalvm)
+    - [GraalVM Installation](#graalvm)
 2. [Usage](#usage)
     - [API Usage](#api-usage)
         - [Api End-Point](#api-end-point)
@@ -21,9 +20,8 @@ Clone project into a local folder.
 $ git clone https://github.com/LMohamedPro/notebook--server.git
 ```
 
-## Maven Installation
+## GraalVM
 
-### GraalVM 
 GraalVM must be installed in order to be able to build the project. 
 You can download graalVM from the [GraalVM homepage](https://www.graalvm.org/). 
 Also you can follow the [Getting Started with GraalVM](https://www.graalvm.org/docs/getting-started/). 
@@ -72,6 +70,8 @@ Here is a small description of the request body fields:
 %language code
 ```
 
+- sessionId: the session id to for using the same context.
+
 ### Interpreter response body
 
 The **/execute** returns a json object as response. The response have the following format:
@@ -111,4 +111,3 @@ Here are some example of requests and responses :
   "sessionId": "mySessionId"
 }
 ```
-
