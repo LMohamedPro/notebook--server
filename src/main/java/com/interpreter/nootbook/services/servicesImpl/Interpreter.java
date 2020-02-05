@@ -4,7 +4,6 @@ package com.interpreter.nootbook.services.servicesImpl;
 import com.interpreter.nootbook.configuration.NoteBookProperties;
 import com.interpreter.nootbook.exceptions.InvalidRequestFormatException;
 import com.interpreter.nootbook.exceptions.LanguageUnsupportedException;
-import com.interpreter.nootbook.exceptions.TimeOutException;
 import com.interpreter.nootbook.models.Execution;
 import com.interpreter.nootbook.models.InterpreterRequest;
 import com.interpreter.nootbook.services.InterpreterService;
@@ -36,6 +35,7 @@ public class Interpreter implements InterpreterService {
 
         Timer timer = new Timer(true);
         final Execution finalContext ;
+        Execution context = null;
         try {
 
             String language ;
@@ -54,24 +54,21 @@ public class Interpreter implements InterpreterService {
                 throw new LanguageUnsupportedException("Language Unsupported");
             }
 
-            Execution context = this.sessionExecution.get(request.getSessionId());
+            context = this.sessionExecution.get(request.getSessionId());
             if (context == null) {
                 context = new Execution();
                 this.sessionExecution.put(request.getSessionId(), context);
             }
 
+            context.getContext().enter();
             context.getOutputStream().reset();
             finalContext = context;
 
             timer.schedule(new TimerTask() {
-                private final long start = System.currentTimeMillis();
                 @Override
                 public void run() {
-                    if (System.currentTimeMillis() - start < noteBookProperties.getTimeOutValue()) {
-                        finalContext.getContext().close(true);
-                    } else {
-                        throw new TimeOutException("Request taking too long to execute");
-                    }
+                    finalContext.getContext().close(true);
+                    System.out.println("closed");
                 }
             }, noteBookProperties.getTimeOutValue() );
 
@@ -83,7 +80,9 @@ public class Interpreter implements InterpreterService {
 
         }finally {
 
+            context.getContext().leave();
             timer.cancel();
+            timer.purge();
         }
 
         return finalContext;

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Getter
 public class NoteBookProperties {
 
-    private int TimeOutValue = 10000;
+    private int TimeOutValue = 5000;
 
 }

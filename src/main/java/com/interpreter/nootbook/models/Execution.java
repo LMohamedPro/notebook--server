@@ -27,7 +27,7 @@ public class Execution {
      */
     public Execution() {
         this.outputStream =  new ByteArrayOutputStream();
-        this.context = Context.newBuilder().out(this.outputStream).err(this.outputStream).build();
+        this.context = Context.newBuilder("python").out(this.outputStream).err(this.outputStream).build();
 
     }
 }
