@@ -98,7 +98,7 @@ Here are some example of requests and responses :
 - Request Body :
 ```json
 {
-  "code": "%python print(1)”, 
+  "code": "%python print(1)", 
   "sessionId": "mySessionId"
 }
 ```
@@ -107,7 +107,7 @@ Here are some example of requests and responses :
 
 ```json
 {
-  "result": “1\n”,
+  "result": "1\n",
   "sessionId": "mySessionId"
 }
 ```
