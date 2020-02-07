@@ -30,25 +30,49 @@ class NootbookApplicationTests {
 
     @Test
     public void workingGood() throws Exception {
-        InterpreterRequest reauest = new InterpreterRequest();
-        reauest.setCode("%python \n print('Hello')");
+        InterpreterRequest request = new InterpreterRequest();
+        request.setCode("%python \n print('Hello')");
         this.mockMvc.perform(
                             post("/execute")
-                                    .content(mapper.writeValueAsString(reauest))
+                                    .content(mapper.writeValueAsString(request))
                                     .contentType(MediaType.APPLICATION_JSON))
                             .andExpect(status().isOk())
                             .andExpect(jsonPath("$.result", is("Hello\n")));
+    }
 
+    @Test
+    public void notWorkingJsonInvalid() throws Exception {
+        InterpreterRequest request = new InterpreterRequest();
+        request.setCode("");
+        this.mockMvc.perform(
+                post("/execute")
+                        .content(mapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is("Invalid Request Format")));
+
+    }
+
+    @Test
+    public void notWorkingGoodTooLongToExecute() throws Exception {
+        InterpreterRequest request = new InterpreterRequest();
+        request.setCode("%python \n while (1 < 2): print('The count is: 1') ");
+        this.mockMvc.perform(
+                post("/execute")
+                        .content(mapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result", is("Request taking too long to execute, Context Closed and removed")));
 
     }
 
     @Test
     public void notWorkingGoodLanguageUnsupported() throws Exception {
-        InterpreterRequest reauest = new InterpreterRequest();
-        reauest.setCode("%test \n print('Hello')");
+        InterpreterRequest request = new InterpreterRequest();
+        request.setCode("%test \n print('Hello')");
         this.mockMvc.perform(
                 post("/execute")
-                        .content(mapper.writeValueAsString(reauest))
+                        .content(mapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result", is("Language Unsupported")));
@@ -57,11 +81,11 @@ class NootbookApplicationTests {
     }
     @Test
     public void notWorkingGoodError() throws Exception {
-        InterpreterRequest reauest = new InterpreterRequest();
-        reauest.setCode("%python \n print(a)");
+        InterpreterRequest request = new InterpreterRequest();
+        request.setCode("%python \n print(a)");
         this.mockMvc.perform(
                 post("/execute")
-                        .content(mapper.writeValueAsString(reauest))
+                        .content(mapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result", is("NameError: name 'a' is not defined")));

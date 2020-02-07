@@ -86,7 +86,9 @@ public class Interpreter implements InterpreterService {
 
         }finally {
 
-            context.getContext().leave();
+            if(context != null){
+                context.getContext().leave();
+            }
             timer.cancel();
             timer.purge();
         }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Getter
 public class NoteBookProperties {
 
-    private int timeOutValue = 5000;
+    private int timeOutValue = 10000;
 
     private String laguage = "python";
 
