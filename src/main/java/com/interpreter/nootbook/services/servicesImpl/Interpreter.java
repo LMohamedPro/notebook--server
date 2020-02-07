@@ -4,6 +4,7 @@ package com.interpreter.nootbook.services.servicesImpl;
 import com.interpreter.nootbook.configuration.NoteBookProperties;
 import com.interpreter.nootbook.exceptions.InvalidRequestFormatException;
 import com.interpreter.nootbook.exceptions.LanguageUnsupportedException;
+import com.interpreter.nootbook.exceptions.TimeOutException;
 import com.interpreter.nootbook.models.Execution;
 import com.interpreter.nootbook.models.InterpreterRequest;
 import com.interpreter.nootbook.services.InterpreterService;
@@ -50,7 +51,7 @@ public class Interpreter implements InterpreterService {
                 throw new InvalidRequestFormatException("Invalid Request Format");
             }
 
-            if (!language.equals("python")) {
+            if (!language.equals(noteBookProperties.getLaguage())) {
                 throw new LanguageUnsupportedException("Language Unsupported");
             }
 
@@ -75,6 +76,11 @@ public class Interpreter implements InterpreterService {
             finalContext.getContext().eval(language, code);
 
         } catch (PolyglotException e) {
+
+            if (e.isCancelled()) {
+                sessionExecution.remove(request.getSessionId());
+                throw new TimeOutException("Request taking too long to execute, Context Closed and removed");
+            }
 
             throw new RuntimeException(e.getMessage());
 
