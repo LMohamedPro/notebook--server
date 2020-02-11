@@ -1,4 +1,4 @@
-package com.interpreter.nootbook.services.servicesImpl;
+package com.interpreter.nootbook.services.servicesImplementation;
 
 
 import com.interpreter.nootbook.configuration.NoteBookProperties;
